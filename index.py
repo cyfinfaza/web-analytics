@@ -16,6 +16,7 @@ requestsCollection = db.requests
 
 app = Flask(__name__)
 cors = CORS(app, supports_credentials=True)
+app.config.update(SESSION_COOKIE_SAMESITE='None', SESSION_COOKIE_SECURE=True)
 app.secret_key = '--------' # DO NOT CHANGE THIS UNLESS YOU WANT ALL REGISTERED SESSIONS TO BREAK
 app.permanent_session_lifetime = timedelta(days=365)
 app.session_cookie_name = 'pvt_s'
