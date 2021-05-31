@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 from flask import Flask, request, session, Response
+from flask_cors import CORS
 import pymongo
 from uuid import uuid4
 import dotenv
@@ -14,6 +15,7 @@ sessionsCollection = db.sessions
 requestsCollection = db.requests
 
 app = Flask(__name__)
+cors = CORS(app, supports_credentials=True)
 app.secret_key = '--------' # DO NOT CHANGE THIS UNLESS YOU WANT ALL REGISTERED SESSIONS TO BREAK
 app.permanent_session_lifetime = timedelta(days=365)
 app.session_cookie_name = 'pvt_s'
@@ -28,6 +30,7 @@ def catch_all(path):
 	if request.method == 'POST':
 		if not 'track_id' in session:
 			session['track_id'] = str(uuid4())
+			return "unconfirmed"
 		url = request.data.decode('utf-8')
 		agent = str(request.user_agent)
 		if len(url)>200 or len(agent)>200:
